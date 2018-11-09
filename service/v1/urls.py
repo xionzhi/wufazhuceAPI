@@ -1,6 +1,9 @@
 from service import api
 
-from .views import PhotoView, ArticleView, QuestionView, TestView
+from .views import (PhotoView,
+                    ArticleView,
+                    QuestionView,
+                    TestView)
 
 
 api.add_resource(TestView, '/v1')

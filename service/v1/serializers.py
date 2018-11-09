@@ -1,6 +1,8 @@
 from service import ma
 
-from service.models import PhotoModel, ArticleModel, QuestionModel
+from service.models import (PhotoModel,
+                            ArticleModel,
+                            QuestionModel)
 
 
 class PhotoSchema(ma.ModelSchema):

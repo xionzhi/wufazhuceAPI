@@ -3,8 +3,13 @@ from flask_restful import Resource
 
 from service import db
 
-from .serializers import PhotoSchema, ArticleSchema, QuestionSchema
-from service.models import PhotoModel, ArticleModel, QuestionModel
+from .serializers import (PhotoSchema,
+                          ArticleSchema,
+                          QuestionSchema)
+
+from service.models import (PhotoModel,
+                            ArticleModel,
+                            QuestionModel)
 
 
 class PhotoView(Resource):
