@@ -70,3 +70,13 @@ class QuestionView(Resource):
         except Exception as e:
             print(e)
             return {'code': 500, 'message': ' server error '}, 500
+
+
+class TestView(Resource):
+    def get(self): return {'http method': 'get'}, 200
+
+    def post(self): return {'http method': 'post'}, 200
+
+    def put(self): return {'http method': 'put'}, 201
+
+    def delete(self): return {'http method': 'delete'}, 204
