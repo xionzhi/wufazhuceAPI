@@ -22,9 +22,9 @@ class PhotoView(Resource):
                                                PhotoModel.photo_date,
                                                PhotoModel.photo_text,
                                                PhotoModel.wufazhuce_url). \
-                    filter(PhotoModel.photo_text.like('%{0}%'.format(photo_text))).all()
-            else:
-                result_list = []
+                    filter(PhotoModel.photo_text.like('%{0}%'.format(photo_text))). \
+                    limit(10).all()
+
             if photo_id is not None and photo_text is None:
                 result_list = db.session.query(PhotoModel.photo_id,
                                                PhotoModel.photo_url,
@@ -34,11 +34,12 @@ class PhotoView(Resource):
                     filter(PhotoModel.photo_id == photo_id).first()
                 result_list = [result_list]
 
-            result = [PhotoSchema().dump(i).data for i in result_list]
+            result = [PhotoSchema().dump(_).data for _ in result_list]
 
             return result
         except Exception as e:
-            return {'code': 500, 'message': 'service error'}
+            print(e)
+            return {'code': 500, 'message': ' server error '}, 500
 
 
 class ArticleView(Resource):
@@ -46,10 +47,14 @@ class ArticleView(Resource):
         '''
         Article get
         '''
-        article_id = request.args.get('id', None, int)
-        article_author = request.args.get('author', None, int)
-        article_text = request.args.get('text', None, int)
-        article_body = request.args.get('body', None, int)
+        try:
+            article_id = request.args.get('id', None, int)
+            article_author = request.args.get('author', None, int)
+            article_text = request.args.get('text', None, int)
+            article_body = request.args.get('body', None, int)
+        except Exception as e:
+            print(e)
+            return {'code': 500, 'message': ' server error '}, 500
 
 
 class QuestionView(Resource):
@@ -57,4 +62,11 @@ class QuestionView(Resource):
         '''
         Resource get
         '''
-        pass
+        try:
+            question_id = request.args.get('id', None, int)
+            question_author = request.args.get('author', None, int)
+            question_text = request.args.get('text', None, int)
+            question_body = request.args.get('body', None, int)
+        except Exception as e:
+            print(e)
+            return {'code': 500, 'message': ' server error '}, 500

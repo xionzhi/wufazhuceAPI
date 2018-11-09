@@ -4,7 +4,7 @@ from sqlalchemy.dialects.mysql import INTEGER, TEXT
 
 
 class PhotoModel(db.Model):
-    __tablename__ = 'photo'
+    __tablename__ = 'wufazhuce_photo'
 
     photo_id = db.Column(INTEGER, primary_key=True)
     photo_url = db.Column(TEXT)
@@ -14,7 +14,7 @@ class PhotoModel(db.Model):
 
 
 class ArticleModel(db.Model):
-    __tablename__ = 'article'
+    __tablename__ = 'wufazhuce_article'
 
     article_id = db.Column(INTEGER, primary_key=True)
     article_title = db.Column(TEXT)
@@ -24,7 +24,7 @@ class ArticleModel(db.Model):
 
 
 class QuestionModel(db.Model):
-    __tablename__ = 'question'
+    __tablename__ = 'wufazhuce_question'
 
     question_id = db.Column(INTEGER, primary_key=True)
     question_title = db.Column(TEXT)
