@@ -3,13 +3,8 @@ from flask_restful import Resource
 
 from service import db
 
-from .serializers import (PhotoSchema,
-                          ArticleSchema,
-                          QuestionSchema)
-
-from service.models import (PhotoModel,
-                            ArticleModel,
-                            QuestionModel)
+from .serializers import PhotoSchema, ArticleSchema, QuestionSchema
+from service.models import PhotoModel, ArticleModel, QuestionModel
 
 
 class PhotoView(Resource):
@@ -18,32 +13,32 @@ class PhotoView(Resource):
         Photo get
         '''
         try:
-            photo_id = request.args.get('id', None, int)
-            photo_text = request.args.get('text', None, str)
+            _photo_id = request.args.get('id', None, int)
+            _photo_text = request.args.get('text', None, str)
 
-            if photo_text is not None:
+            if _photo_id is not None:
                 result_list = db.session.query(PhotoModel.photo_id,
                                                PhotoModel.photo_url,
                                                PhotoModel.photo_date,
                                                PhotoModel.photo_text,
                                                PhotoModel.wufazhuce_url). \
-                    filter(PhotoModel.photo_text.like('%{0}%'.format(photo_text))). \
-                    limit(10).all()
-
-            if photo_id is not None and photo_text is None:
-                result_list = db.session.query(PhotoModel.photo_id,
-                                               PhotoModel.photo_url,
-                                               PhotoModel.photo_date,
-                                               PhotoModel.photo_text,
-                                               PhotoModel.wufazhuce_url). \
-                    filter(PhotoModel.photo_id == photo_id).first()
+                    filter(PhotoModel.photo_id == _photo_id).first()
                 result_list = [result_list]
+                return [PhotoSchema().dump(_).data for _ in result_list]
 
-            result = [PhotoSchema().dump(_).data for _ in result_list]
+            if _photo_text is not None:
+                result_list = db.session.query(PhotoModel.photo_id,
+                                               PhotoModel.photo_url,
+                                               PhotoModel.photo_date,
+                                               PhotoModel.photo_text,
+                                               PhotoModel.wufazhuce_url). \
+                    filter(PhotoModel.photo_text.like('%{0}%'.format(_photo_text))). \
+                    limit(10).all()
+            else:
+                result_list = []
 
-            return result
+            return [PhotoSchema().dump(_).data for _ in result_list]
         except Exception as e:
-            print(e)
             return {'code': 500, 'message': ' server error '}, 500
 
 
@@ -53,12 +48,41 @@ class ArticleView(Resource):
         Article get
         '''
         try:
-            article_id = request.args.get('id', None, int)
-            article_author = request.args.get('author', None, int)
-            article_text = request.args.get('text', None, int)
-            article_body = request.args.get('body', None, int)
+            _article_id = request.args.get('id', None, int)
+            _article_title = request.args.get('title', None, str)
+            _article_author = request.args.get('author', None, str)
+            _article_text = request.args.get('text', None, str)
+            _article_body = request.args.get('body', None, str)
+
+            if _article_id is not None:
+                result_list = db.session.query(ArticleModel.article_id,
+                                               ArticleModel.article_author,
+                                               ArticleModel.article_title,
+                                               ArticleModel.article_text,
+                                               ArticleModel.article_body). \
+                    filter(ArticleModel.article_id == _article_id).first()
+                result_list = [result_list]
+                return [ArticleSchema().dump(_).data for _ in result_list]
+
+            if _article_title is not None:
+                result_list = db.session.query(ArticleModel.article_id,
+                                               ArticleModel.article_author,
+                                               ArticleModel.article_title,
+                                               ArticleModel.article_text,
+                                               ArticleModel.article_body). \
+                    filter(ArticleModel.article_title.like('%{0}%'.format(_article_title)))
+                if _article_author is not None:
+                    result_list = result_list.filter(ArticleModel.article_author.like('%{0}%'.format(_article_author)))
+                if _article_text is not None:
+                    result_list = result_list.filter(ArticleModel.article_text.like('%{0}%'.format(_article_text)))
+                if _article_body is not None:
+                    result_list = result_list.filter(ArticleModel.article_body.like('%{0}%'.format(_article_body)))
+                result_list = result_list.limit(10).all()
+            else:
+                result_list = []
+
+            return [ArticleSchema().dump(_).data for _ in result_list]
         except Exception as e:
-            print(e)
             return {'code': 500, 'message': ' server error '}, 500
 
 
