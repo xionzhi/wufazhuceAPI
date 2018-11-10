@@ -41,6 +41,12 @@ class PhotoView(Resource):
         except Exception as e:
             return {'code': 500, 'message': ' server error '}, 500
 
+    def post(self):
+        '''
+        Photo post
+        '''
+        pass
+
 
 class ArticleView(Resource):
     def get(self):
@@ -85,11 +91,17 @@ class ArticleView(Resource):
         except Exception as e:
             return {'code': 500, 'message': ' server error '}, 500
 
+    def post(self):
+        '''
+        Article post
+        '''
+        pass
+
 
 class QuestionView(Resource):
     def get(self):
         '''
-        Resource get
+        Question get
         '''
         try:
             _question_id = request.args.get('id', None, int)
@@ -121,6 +133,12 @@ class QuestionView(Resource):
         except Exception as e:
             print(e)
             return {'code': 500, 'message': ' server error '}, 500
+
+    def post(self):
+        '''
+        Question post
+        '''
+        pass
 
 
 class TestView(Resource):
