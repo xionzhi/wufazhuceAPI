@@ -23,8 +23,8 @@ class PhotoView(Resource):
                                                PhotoModel.photo_text,
                                                PhotoModel.wufazhuce_url). \
                     filter(PhotoModel.photo_id == _photo_id).first()
-                result_list = [result_list]
-                return [PhotoSchema().dump(_).data for _ in result_list]
+
+                return [PhotoSchema().dump(_).data for _ in [result_list]]
 
             if _photo_text is not None:
                 result_list = db.session.query(PhotoModel.photo_id,
@@ -61,8 +61,8 @@ class ArticleView(Resource):
                                                ArticleModel.article_text,
                                                ArticleModel.article_body). \
                     filter(ArticleModel.article_id == _article_id).first()
-                result_list = [result_list]
-                return [ArticleSchema().dump(_).data for _ in result_list]
+
+                return [ArticleSchema().dump(_).data for _ in [result_list]]
 
             if _article_title is not None:
                 result_list = db.session.query(ArticleModel.article_id,
@@ -92,20 +92,42 @@ class QuestionView(Resource):
         Resource get
         '''
         try:
-            question_id = request.args.get('id', None, int)
-            question_author = request.args.get('author', None, int)
-            question_text = request.args.get('text', None, int)
-            question_body = request.args.get('body', None, int)
+            _question_id = request.args.get('id', None, int)
+            _question_title = request.args.get('title', None, str)
+            _question_text = request.args.get('text', None, str)
+
+            if _question_id is not None:
+                result_list = db.session.query(QuestionModel.question_id,
+                                               QuestionModel.question_title,
+                                               QuestionModel.question_text,
+                                               QuestionModel.question_body). \
+                    filter(QuestionModel.question_id == _question_id).first()
+
+                return [QuestionSchema().dump(_).data for _ in [result_list]]
+
+            if _question_title is not None:
+                result_list = db.session.query(QuestionModel.question_id,
+                                               QuestionModel.question_title,
+                                               QuestionModel.question_text,
+                                               QuestionModel.question_body). \
+                    filter(QuestionModel.question_title.like('%{0}%'.format(_question_title)))
+                if _question_text is not None:
+                    result_list = result_list.filter(QuestionModel.question_text.like('%{0}%'.format(_question_text)))
+                result_list = result_list.limit(10).all()
+            else:
+                result_list = []
+
+            return [QuestionSchema().dump(_).data for _ in result_list]
         except Exception as e:
             print(e)
             return {'code': 500, 'message': ' server error '}, 500
 
 
 class TestView(Resource):
-    def get(self): return {'http method': 'get'}, 200
+    def get(self): return {'method': 'get'}, 200
 
-    def post(self): return {'http method': 'post'}, 200
+    def post(self): return {'method': 'post'}, 200
 
-    def put(self): return {'http method': 'put'}, 201
+    def put(self): return {'method': 'put'}, 201
 
-    def delete(self): return {'http method': 'delete'}, 204
+    def delete(self): return {'method': 'delete'}, 204
