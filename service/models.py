@@ -1,3 +1,9 @@
+"""
+@Time    : 2018-11-12 16:02:49
+@Author  : xionzhi
+@File    : models.py
+@Software: vscode
+"""
 from service import db
 
 from sqlalchemy.dialects.mysql import INTEGER, TEXT

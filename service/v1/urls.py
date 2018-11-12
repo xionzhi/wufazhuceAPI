@@ -1,3 +1,9 @@
+"""
+@Time    : 2018-11-12 16:02:49
+@Author  : xionzhi
+@File    : urls.py
+@Software: vscode
+"""
 from service import api
 
 from .views import (PhotoView,

@@ -1,7 +1,13 @@
+"""
+@Time    : 2018-11-12 16:02:49
+@Author  : xionzhi
+@File    : views.py
+@Software: vscode
+"""
 from flask import request
 from flask_restful import Resource
 
-from service import db
+from service import db, logger
 
 from .serializers import PhotoSchema, ArticleSchema, QuestionSchema
 from service.models import PhotoModel, ArticleModel, QuestionModel
@@ -39,6 +45,7 @@ class PhotoView(Resource):
 
             return [PhotoSchema().dump(_).data for _ in result_list]
         except Exception as e:
+            logger.debug(e)
             return {'code': 500, 'message': ' server error '}, 500
 
     def post(self):
@@ -89,6 +96,7 @@ class ArticleView(Resource):
 
             return [ArticleSchema().dump(_).data for _ in result_list]
         except Exception as e:
+            logger.debug(e)
             return {'code': 500, 'message': ' server error '}, 500
 
     def post(self):
@@ -131,7 +139,7 @@ class QuestionView(Resource):
 
             return [QuestionSchema().dump(_).data for _ in result_list]
         except Exception as e:
-            print(e)
+            logger.debug(e)
             return {'code': 500, 'message': ' server error '}, 500
 
     def post(self):
