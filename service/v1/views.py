@@ -45,7 +45,7 @@ class PhotoView(Resource):
 
             return [PhotoSchema().dump(_).data for _ in result_list]
         except Exception as e:
-            logger.debug(e)
+            logger.error(e)
             return {'code': 500, 'message': ' server error '}, 500
 
     def post(self):
@@ -96,7 +96,7 @@ class ArticleView(Resource):
 
             return [ArticleSchema().dump(_).data for _ in result_list]
         except Exception as e:
-            logger.debug(e)
+            logger.error(e)
             return {'code': 500, 'message': ' server error '}, 500
 
     def post(self):
@@ -139,7 +139,7 @@ class QuestionView(Resource):
 
             return [QuestionSchema().dump(_).data for _ in result_list]
         except Exception as e:
-            logger.debug(e)
+            logger.error(e)
             return {'code': 500, 'message': ' server error '}, 500
 
     def post(self):
