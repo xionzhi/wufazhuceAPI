@@ -1,4 +1,4 @@
 {
-    "python.pythonPath": "/Users/xionzhi/xionzDev/venv/bin/python3",
+    "python.pythonPath": "/home/xionzhi/xionzhi/venv/bin/python",
     "python.linting.pylintArgs": ["--load-plugins", "pylint_flask"]
 }
