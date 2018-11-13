@@ -30,6 +30,9 @@ class PhotoView(Resource):
                                                PhotoModel.wufazhuce_url). \
                     filter(PhotoModel.photo_id == _photo_id).first()
 
+                if result_list is None:
+                    return [], 404
+
                 return [PhotoSchema().dump(_).data for _ in [result_list]]
 
             if _photo_text is not None:
@@ -40,13 +43,15 @@ class PhotoView(Resource):
                                                PhotoModel.wufazhuce_url). \
                     filter(PhotoModel.photo_text.like('%{0}%'.format(_photo_text))). \
                     limit(10).all()
+                if result_list == []:
+                    return [], 404
             else:
-                result_list = []
+                return {'code': 400, 'message': ' Bad Request '}, 400
 
             return [PhotoSchema().dump(_).data for _ in result_list]
         except Exception as e:
             logger.error(e)
-            return {'code': 500, 'message': ' server error '}, 500
+            return {'code': 500, 'message': ' Internal Server Error '}, 500
 
     def post(self):
         '''
@@ -75,6 +80,9 @@ class ArticleView(Resource):
                                                ArticleModel.article_body). \
                     filter(ArticleModel.article_id == _article_id).first()
 
+                if result_list is None:
+                    return [], 404
+
                 return [ArticleSchema().dump(_).data for _ in [result_list]]
 
             if _article_title is not None:
@@ -91,13 +99,16 @@ class ArticleView(Resource):
                 if _article_body is not None:
                     result_list = result_list.filter(ArticleModel.article_body.like('%{0}%'.format(_article_body)))
                 result_list = result_list.limit(10).all()
+
+                if result_list == []:
+                    return [], 404
             else:
-                result_list = []
+                return {'code': 400, 'message': ' Bad Request '}, 400
 
             return [ArticleSchema().dump(_).data for _ in result_list]
         except Exception as e:
             logger.error(e)
-            return {'code': 500, 'message': ' server error '}, 500
+            return {'code': 500, 'message': ' Internal Server Error '}, 500
 
     def post(self):
         '''
@@ -123,6 +134,9 @@ class QuestionView(Resource):
                                                QuestionModel.question_body). \
                     filter(QuestionModel.question_id == _question_id).first()
 
+                if result_list is None:
+                    return [], 404
+
                 return [QuestionSchema().dump(_).data for _ in [result_list]]
 
             if _question_title is not None:
@@ -134,13 +148,16 @@ class QuestionView(Resource):
                 if _question_text is not None:
                     result_list = result_list.filter(QuestionModel.question_text.like('%{0}%'.format(_question_text)))
                 result_list = result_list.limit(10).all()
+
+                if result_list == []:
+                    return [], 404
             else:
-                result_list = []
+                return {'code': 400, 'message': ' Bad Request '}, 400
 
             return [QuestionSchema().dump(_).data for _ in result_list]
         except Exception as e:
             logger.error(e)
-            return {'code': 500, 'message': ' server error '}, 500
+            return {'code': 500, 'message': ' Internal Server Error '}, 500
 
     def post(self):
         '''
